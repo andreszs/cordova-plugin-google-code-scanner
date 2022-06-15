@@ -124,7 +124,8 @@ Formats are not hardcoded internally, therefore any format supported by the API 
 
 # Plugin demo app
 
-Under construction, please check back soon.
+- Compiled debug APK and reference: coming soon.
+- [Source code for www folder](https://github.com/andreszs/cordova-plugin-demos "Source code for www folder")
 
 # Contributing
 
