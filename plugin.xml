@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin id="cordova-plugin-google-code-scanner"
+		  version="1.0.0"
+		  xmlns="http://apache.org/cordova/ns/plugins/1.0"
+		  xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<name>GoogleCodeScanner</name>
+	<description>Google code scanner Cordova plugin implementation.</description>
+	<license>MIT</license>
+
+	<engines>
+		<engine name="cordova" version=">=9.0.0"/>
+	</engines>
+
+	<js-module src="www/GoogleCodeScanner.js" name="GoogleCodeScanner">
+		<clobbers target="cordova.plugins.GoogleCodeScanner" />
+	</js-module>
+
+	<platform name="android">
+		<config-file target="config.xml" parent="/*">
+			<preference name="AndroidXEnabled" value="true" />
+		</config-file>
+
+		<preference name="PLAY_SERVICES_CGS_VERSION" default="16.0.0-beta1" />
+		<framework src="com.google.android.gms:play-services-code-scanner:$PLAY_SERVICES_CGS_VERSION" />
+
+		<preference name="ANDROIDX_BIOMETRIC_VERSION" default="1.2.0-alpha03" />
+		<framework src="androidx.biometric:biometric:$ANDROIDX_BIOMETRIC_VERSION" />
+
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="GoogleCodeScanner">
+				<param name="android-package" value="com.andreszs.gcs.GoogleCodeScanner"/>
+			</feature>
+		</config-file>
+
+		<source-file src="src/android/GoogleCodeScanner.java" target-dir="src/com/andreszs/gcs" />
+	</platform>
+
+	<platform name="browser">
+		<config-file target="config.xml" parent="/*">
+			<feature name="GoogleCodeScanner">
+				<param name="browser-package" value="GoogleCodeScanner" />
+			</feature>
+		</config-file>
+		<js-module src="src/browser/GoogleCodeScannerProxy.js" name="GoogleCodeScannerProxy">
+			<runs />
+		</js-module>
+	</platform>
+
+</plugin>

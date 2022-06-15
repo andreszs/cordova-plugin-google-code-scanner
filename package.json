@@ -1,0 +1,41 @@
+{
+	"name": "cordova-plugin-google-code-scanner",
+	"version": "1.0.0",
+	"description": "Google code scanner Cordova plugin implementation.",
+	"cordova": {
+		"id": "cordova-plugin-google-code-scanner",
+		"platforms": [
+			"android",
+			"browser"
+		]
+	},
+	"keywords": [
+		"cordova",
+		"plugin",
+		"google-code-scanner",
+		"barcode",
+		"qrcode",
+		"ecosystem:cordova",
+		"cordova-android",
+		"cordova-browser"
+	],
+	"engines": [
+		{
+			"name": "cordova",
+			"version": ">=9.0.0"
+		}
+	],
+	"author": {
+		"name": "Andres Zsogon",
+		"email": "andreszs@users.noreply.github.com"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/andreszs/cordova-plugin-google-code-scanner.git"
+	},
+	"homepage": "https://github.com/andreszs/cordova-plugin-google-code-scanner#readme",
+	"bugs": {
+		"url": "https://github.com/andreszs/cordova-plugin-google-code-scanner/issues"
+	}
+}
