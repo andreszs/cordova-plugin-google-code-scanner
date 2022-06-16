@@ -147,7 +147,7 @@ var options = {};
 options.barcodeFormat = "FORMAT_DATA_MATRIX";
 cordova.plugins.GoogleCodeScanner.getBarcodeConstant(onSuccess, onError, options);
 ```
-# Supported barcode types
+# Predefined barcode formats
 
 All formats from the ML Kit [Barcode](https://developers.google.com/android/reference/com/google/mlkit/vision/barcode/common/Barcode "Barcode") class are supported.
 
