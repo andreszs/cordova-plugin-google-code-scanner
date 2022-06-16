@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin id="cordova-plugin-google-code-scanner"
-		  version="1.0.0"
+		  version="1.0.1"
 		  xmlns="http://apache.org/cordova/ns/plugins/1.0"
 		  xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -23,9 +23,6 @@
 
 		<preference name="PLAY_SERVICES_CGS_VERSION" default="16.0.0-beta1" />
 		<framework src="com.google.android.gms:play-services-code-scanner:$PLAY_SERVICES_CGS_VERSION" />
-
-		<preference name="ANDROIDX_BIOMETRIC_VERSION" default="1.2.0-alpha03" />
-		<framework src="androidx.biometric:biometric:$ANDROIDX_BIOMETRIC_VERSION" />
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="GoogleCodeScanner">
