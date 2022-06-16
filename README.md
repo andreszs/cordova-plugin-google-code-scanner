@@ -41,15 +41,14 @@ If you know which barcode formats you expect to read, you can improve the speed 
 
 ### Success callback return values
 
-JSON object with the following properties:
+JSON object as follows:
 
 | **jsonBarcode** | |
 | --- | --- |
-| rawValue | **String**:  the barcode's raw, unmodified, and uninterpreted content |
+| rawValue | **String**:  the barcode's raw, unmodified, and uninterpreted content. |
 | formatName | **String**: the barcode type name. E.g: `FORMAT_EAN_13`. |
 | formatValue | **int**:  the barcode format type (i.e. its encoding) constant value. |
 | valueType | **int**: the format type of the barcode value. |
-
 
 ### Error callback return values
 
@@ -112,9 +111,13 @@ options.barcodeFormats = cordova.plugins.GoogleCodeScanner.BarcodeFormat.FORMAT_
 cordova.plugins.GoogleCodeScanner.startScan(onSuccess, onError, options);
 ```
 
+### Browser quirks
+
+The browser platform method will show a prompt to enter the code string manually, no scanning is performed.
+
 ## getBarcodeConstant
 
-Retrieve the Barcode format constant value by its String name.
+Retrieve the Barcode format constant value by its String name. Useful to scan new barcode formats added in the future.
 
 ```javascript
 cordova.plugins.GoogleCodeScanner.getBarcodeConstant(onSuccess, onError, options);
@@ -126,12 +129,12 @@ cordova.plugins.GoogleCodeScanner.getBarcodeConstant(onSuccess, onError, options
 
 ### Success callback return values
 
-JSON object with the following properties:
+JSON object as follows:
 
 | **jsonConstant** | |
 | --- | --- |
-| formatName | **String**: the barcode type name. E.g: `FORMAT_EAN_13`. |
-| formatValue | **int**:  the barcode type (i.e. its encoding) constant value. |
+| formatName | **String**: the barcode format name. E.g: `FORMAT_EAN_13`. |
+| formatValue | **int**:  the barcode format constant value. |
 
 ### Example
 
@@ -147,11 +150,16 @@ var options = {};
 options.barcodeFormat = "FORMAT_DATA_MATRIX";
 cordova.plugins.GoogleCodeScanner.getBarcodeConstant(onSuccess, onError, options);
 ```
+
+### Browser quirks
+
+The browser platform does not implement this method.
+
 # Predefined barcode formats
 
-All formats from the ML Kit [Barcode](https://developers.google.com/android/reference/com/google/mlkit/vision/barcode/common/Barcode "Barcode") class are supported.
+Because the **startScan** method accepts an integer, all formats from the ML Kit [Barcode](https://developers.google.com/android/reference/com/google/mlkit/vision/barcode/common/Barcode "Barcode") class are supported.
 
-The following barcode constants are pre-defined by the plugin:
+The following barcode constants are pre-defined by the plugin for your convenience:
 
 ```javascript
 cordova.plugins.GoogleCodeScanner.BarcodeFormat {
@@ -174,7 +182,9 @@ cordova.plugins.GoogleCodeScanner.BarcodeFormat {
 
 # Remarks
 
-- The plugin uses Google Code Scanner [16.0.0-beta1](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "16.0.0-beta1") by default. This is the first release.
+- Camera usage permission not required.
+- Reads all barcodes blazingly faster than any other barcode plugin thanks to the Google Play Services API.
+- Plugin uses Google Code Scanner [16.0.0-beta1](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "16.0.0-beta1") by default. This is the first release.
 - To use a newer version in the future, the install accepts the **PLAY_SERVICES_CGS_VERSION** parameter.
 - It seems that whenever Play Store app is disabled, the UI module cannot be downloaded. Further tests required to verify this.
 - If you are viewing this README in NPM, there is probably a more up-to-date version in [GitHub](https://github.com/andreszs/cordova-plugin-google-code-scanner "GitHub").
