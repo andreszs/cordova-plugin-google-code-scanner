@@ -7,14 +7,20 @@ The [Google code scanner API](https://developers.google.com/ml-kit/code-scanner)
 
 # Platforms
 
-- Android (minSDK 21)
-- Browser (basic support)
+- Android 5+ (minSDK 21)
+- Browser (filler platform)
 
 # Installation
 
 Install the plugin from NPM:
 ```bash
 cordova plugin add cordova-plugin-google-code-scanner
+```
+
+By default plugin is installed with [play-services-code-scanner](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "play-services-code-scanner") version 16.0.0-beta1. To install with a newer version in the future use the **PLAY_SERVICES_CGS_VERSION** variable as follows:
+
+```bash
+cordova plugin add cordova-plugin-google-code-scanner --variable PLAY_SERVICES_CGS_VERSION="16.0.0-beta1"
 ```
 
 # Methods
@@ -41,17 +47,19 @@ JSON object with the following properties:
 | --- | --- |
 | rawValue | **String**:  the barcode's raw, unmodified, and uninterpreted content |
 | formatName | **String**: the barcode type name. E.g: `FORMAT_EAN_13`. |
-| formatValue | **int**:  the barcode type (i.e. its encoding) constant value. |
+| formatValue | **int**:  the barcode format type (i.e. its encoding) constant value. |
 | valueType | **int**: the format type of the barcode value. |
 
 
 ### Error callback return values
 
-- The error description.
+- **String**: The error description. On initial use, this message equals `Waiting for the Barcode UI module to be downloaded.`
 
-The first time **startScan** is invoked, this callback will notify you that the barcode UI module is being downloaded in the background, if it has not already been installed for another use case. It's up to you to detect and handle this first-time use error. To handle this, it would be wise to show a [loading spinner](https://github.com/greybax/cordova-plugin-native-spinner "loading spinner"), wait a few seconds, and retry the scan after the module was downloaded.
+The first time **startScan** is invoked, the error callback will notify you that the barcode UI module is being downloaded in the background, if it has not already been installed for another use case. It's up to you to detect and handle this first-time use error. To handle this, it would be wise to show a [loading spinner](https://github.com/greybax/cordova-plugin-native-spinner "loading spinner"), wait a few seconds, and retry the scan after the module was downloaded.
 
-### Example
+### Example 1
+
+Scan code in any format and catch the error whenever the UI module was not yet downloaded:
 
 ```javascript
 var onSuccess = function (jsonBarcode) {
@@ -67,23 +75,46 @@ var onError = function (strError) {
 	}
 	console.error(strError);
 };
+cordova.plugins.GoogleCodeScanner.startScan(onSuccess, onError);
+```
 
+### Example 2
+
+Scan only QR codes:
+
+```javascript
+var onSuccess = function (jsonBarcode) {
+	var rawValue = jsonBarcode.rawValue;
+	// Do things with the code.
+};
+var onError = function (strError) {
+	console.error(strError);
+};
 var options = {};
-options.barcodeFormats = $('#selBarcodeFormat').val();
+options.barcodeFormats = cordova.plugins.GoogleCodeScanner.BarcodeFormat.FORMAT_QR_CODE;
+cordova.plugins.GoogleCodeScanner.startScan(onSuccess, onError, options);
+```
 
-var txtBarcodeFormats = $('#txtBarcodeFormats').val();
-if (txtBarcodeFormats != '' && isNaN(txtBarcodeFormats)) {
-	$('#status').html('<span class="error">Barcode format must be an integer value.</span>');
-} else if (parseInt(txtBarcodeFormats) > 0) {
-	options.barcodeFormats = txtBarcodeFormats;
-}
+### Example 3
 
-cordova.plugins.GoogleCodeScanner.startScan(onSuccess, onError/*, options*/);
+Scan either EAN8 or EAN13 barcodes:
+
+```javascript
+var onSuccess = function (jsonBarcode) {
+	var rawValue = jsonBarcode.rawValue;
+	// Do things with the code.
+};
+var onError = function (strError) {
+	console.error(strError);
+};
+var options = {};
+options.barcodeFormats = cordova.plugins.GoogleCodeScanner.BarcodeFormat.FORMAT_EAN_8 + cordova.plugins.GoogleCodeScanner.BarcodeFormat.FORMAT_EAN_13 ;
+cordova.plugins.GoogleCodeScanner.startScan(onSuccess, onError, options);
 ```
 
 ## getBarcodeConstant
 
-Gets the Barcode constant value from its String name.
+Retrieve the Barcode format constant value by its String name.
 
 ```javascript
 cordova.plugins.GoogleCodeScanner.getBarcodeConstant(onSuccess, onError, options);
@@ -102,30 +133,55 @@ JSON object with the following properties:
 | formatName | **String**: the barcode type name. E.g: `FORMAT_EAN_13`. |
 | formatValue | **int**:  the barcode type (i.e. its encoding) constant value. |
 
+### Example
+
+```javascript
+var onSuccess = function (jsonBarcode) {
+	var formatName = jsonBarcode.formatName;
+	var formatValue = jsonBarcode.formatValue;
+};
+var onError = function (strError) {
+	console.error(strError);
+};
+var options = {};
+options.barcodeFormat = "FORMAT_DATA_MATRIX";
+cordova.plugins.GoogleCodeScanner.getBarcodeConstant(onSuccess, onError, options);
+```
 # Supported barcode types
 
 All formats from the ML Kit [Barcode](https://developers.google.com/android/reference/com/google/mlkit/vision/barcode/common/Barcode "Barcode") class are supported.
 
-    Barcode.FORMAT_CODE_128
-    Barcode.FORMAT_CODE_39
-    Barcode.FORMAT_CODE_93
-    Barcode.FORMAT_CODABAR
-    Barcode.FORMAT_DATA_MATRIX
-    Barcode.FORMAT_EAN_13
-    Barcode.FORMAT_EAN_8
-    Barcode.FORMAT_ITF
-    Barcode.FORMAT_QR_CODE
-    Barcode.FORMAT_UPC_A
-    Barcode.FORMAT_UPC_E
-    Barcode.FORMAT_PDF417
-    Barcode.FORMAT_AZTEC
+The following barcode constants are pre-defined by the plugin:
 
-Formats are not hardcoded internally, therefore any format supported by the API will be automatically available to the plugin.
+```javascript
+cordova.plugins.GoogleCodeScanner.BarcodeFormat {
+	FORMAT_ALL_FORMATS: 0,
+	FORMAT_CODE_128: 1,
+	FORMAT_CODE_39: 2,
+	FORMAT_CODE_93: 4,
+	FORMAT_CODABAR: 8,
+	FORMAT_DATA_MATRIX: 16,
+	FORMAT_EAN_13: 32,
+	FORMAT_EAN_8: 64,
+	FORMAT_ITF: 128,
+	FORMAT_QR_CODE: 256,
+	FORMAT_UPC_A: 512,
+	FORMAT_UPC_E: 1024,
+	FORMAT_PDF417: 2048,
+	FORMAT_AZTEC: 4096
+}
+```
+
+# Remarks
+
+- The plugin uses Google Code Scanner [16.0.0-beta1](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "16.0.0-beta1") by default. This is the first release.
+- To use a newer version in the future, the install accepts the **PLAY_SERVICES_CGS_VERSION** parameter.
+- It seems that whenever Play Store app is disabled, the UI module cannot be downloaded. Further tests required to verify this.
+- If you are viewing this README in NPM, there is probably a more up-to-date version in [GitHub](https://github.com/andreszs/cordova-plugin-google-code-scanner "GitHub").
 
 # Plugin demo app
 
-- Compiled debug APK and reference: coming soon.
-- [Source code for www folder](https://github.com/andreszs/cordova-plugin-demos "Source code for www folder")
+Under construction, please check back soon.
 
 # Contributing
 
