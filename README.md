@@ -4,7 +4,6 @@
 
 The [Google code scanner API](https://developers.google.com/ml-kit/code-scanner) provides a complete solution for scanning codes without requiring your app to request camera permission, while preserving user privacy. This is accomplished by delegating the task of scanning the code to Google Play services and returning only the scan results to your app.
 
-
 # Platforms
 
 - Android 5+ (minSDK 21)
@@ -52,7 +51,9 @@ JSON object as follows:
 
 ### Error callback return values
 
-- **String**: The error description. On initial use, this message equals `Waiting for the Barcode UI module to be downloaded.`
+- **String**: The error description.
+  - On initial use: `Waiting for the Barcode UI module to be downloaded.`
+  - On old Play Services version: `Code scanner module is not supported on current Google Play Services version, please upgrade.`
 
 The first time **startScan** is invoked, the error callback will notify you that the barcode UI module is being downloaded in the background, if it has not already been installed for another use case. It's up to you to detect and handle this first-time use error. To handle this, it would be wise to show a [loading spinner](https://github.com/greybax/cordova-plugin-native-spinner "loading spinner"), wait a few seconds, and retry the scan after the module was downloaded.
 
@@ -191,10 +192,12 @@ cordova.plugins.GoogleCodeScanner.BarcodeFormat {
 
 # Plugin demo app
 
-Under construction, please check back soon.
+- [Compiled debug APK and reference](https://www.andreszsogon.com/cordova-google-code-scanner-plugin-demo/)
+- [Source code for www folder](https://github.com/andreszs/cordova-plugin-demos)
+
+<img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.gcs.demo/screenshots/android/google-code-scanner-1.jpg?raw=true" width="200" /> <img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.gcs.demo/screenshots/android/google-code-scanner-2.jpg?raw=true" width="200" /> <img src="https://github.com/andreszs/cordova-plugin-demos/blob/main/com.andreszs.gcs.demo/screenshots/android/google-code-scanner-3.jpg?raw=true" width="200" />
 
 # Contributing
 
 Please report any issue with this plugin in GitHub by providing detailed context and sample code.
 PRs to improve and add new features or platforms are always welcome.
-
