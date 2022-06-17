@@ -4,8 +4,9 @@ GoogleCodeScanner.prototype.startScan = function (successCallback, errorCallback
 	var rawValue = window.prompt("Enter barcode value (empty value will fire the error handler):");
 	if (rawValue) {
 		var result = {
-			format: args[0].barcodeFormats,
 			rawValue: rawValue,
+			formatValue: args[0].barcodeFormats,
+			formatName: null,
 			valueType: null /* pending implementation, PR welcome */
 		};
 		successCallback(result);
