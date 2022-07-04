@@ -187,7 +187,7 @@ cordova.plugins.GoogleCodeScanner.BarcodeFormat {
 - Reads all barcodes blazingly faster than any other barcode plugin thanks to the Google Play Services API.
 - Plugin uses Google Code Scanner [16.0.0-beta2](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "16.0.0-beta2") by default.
 - To use a newer version in the future, the install accepts the **PLAY_SERVICES_GCS_VERSION** parameter.
-- It seems that whenever Play Store app is disabled, the UI module cannot be downloaded. Further tests required to verify this.
+- Whenever Play Store app is disabled, the UI module cannot be downloaded.
 - If you are viewing this README in NPM, there is probably a more up-to-date version in [GitHub](https://github.com/andreszs/cordova-plugin-google-code-scanner "GitHub").
 
 # Plugin demo app
