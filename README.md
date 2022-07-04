@@ -16,10 +16,10 @@ Install the plugin from NPM:
 cordova plugin add cordova-plugin-google-code-scanner
 ```
 
-By default plugin is installed with [play-services-code-scanner](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "play-services-code-scanner") version 16.0.0-beta1. To install with a newer version in the future use the **PLAY_SERVICES_CGS_VERSION** variable as follows:
+By default plugin is installed with [play-services-code-scanner](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "play-services-code-scanner") version 16.0.0-beta2. To install with a newer version in the future use the **PLAY_SERVICES_GCS_VERSION** variable as follows:
 
 ```bash
-cordova plugin add cordova-plugin-google-code-scanner --variable PLAY_SERVICES_CGS_VERSION="16.0.0-beta1"
+cordova plugin add cordova-plugin-google-code-scanner --variable PLAY_SERVICES_GCS_VERSION="16.0.0-beta2"
 ```
 
 # Methods
@@ -185,8 +185,8 @@ cordova.plugins.GoogleCodeScanner.BarcodeFormat {
 
 - Camera usage permission not required.
 - Reads all barcodes blazingly faster than any other barcode plugin thanks to the Google Play Services API.
-- Plugin uses Google Code Scanner [16.0.0-beta1](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "16.0.0-beta1") by default. This is the first release.
-- To use a newer version in the future, the install accepts the **PLAY_SERVICES_CGS_VERSION** parameter.
+- Plugin uses Google Code Scanner [16.0.0-beta2](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "16.0.0-beta2") by default.
+- To use a newer version in the future, the install accepts the **PLAY_SERVICES_GCS_VERSION** parameter.
 - It seems that whenever Play Store app is disabled, the UI module cannot be downloaded. Further tests required to verify this.
 - If you are viewing this README in NPM, there is probably a more up-to-date version in [GitHub](https://github.com/andreszs/cordova-plugin-google-code-scanner "GitHub").
 
