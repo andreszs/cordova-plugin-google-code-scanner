@@ -1,6 +1,6 @@
 {
 	"name": "cordova-plugin-google-code-scanner",
-	"version": "1.0.3",
+	"version": "1.1.0",
 	"description": "Google code scanner Cordova plugin implementation.",
 	"cordova": {
 		"id": "cordova-plugin-google-code-scanner",
