@@ -16,10 +16,10 @@ Install the plugin from NPM:
 cordova plugin add cordova-plugin-google-code-scanner
 ```
 
-By default plugin is installed with [play-services-code-scanner](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "play-services-code-scanner") version 16.0.0-beta2. To install with a newer version in the future use the **PLAY_SERVICES_GCS_VERSION** variable as follows:
+By default plugin is installed with [play-services-code-scanner](https://maven.google.com/web/index.html?q=play-services-code-scanner#com.google.android.gms:play-services-code-scanner "play-services-code-scanner") version 16.1.0. To install with a newer version in the future use the **PLAY_SERVICES_GCS_VERSION** variable as follows:
 
 ```bash
-cordova plugin add cordova-plugin-google-code-scanner --variable PLAY_SERVICES_GCS_VERSION="16.0.0-beta2"
+cordova plugin add cordova-plugin-google-code-scanner --variable PLAY_SERVICES_GCS_VERSION="16.1.0"
 ```
 
 # Methods
