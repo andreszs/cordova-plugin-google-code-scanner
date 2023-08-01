@@ -20,7 +20,7 @@ import java.lang.reflect.Modifier;
 public class GoogleCodeScanner extends CordovaPlugin {
     private CallbackContext mCallbackContext;
 
-    private static final String TAG = "BiometricAuth";
+    private static final String TAG = "GScanner";
 
     @Override
     public boolean execute(String action, JSONArray jsonArgs, CallbackContext callbackContext) throws JSONException {
@@ -45,7 +45,10 @@ public class GoogleCodeScanner extends CordovaPlugin {
         int barcodeFormats = getInt(jsonArgs, "barcodeFormats", Barcode.FORMAT_ALL_FORMATS);
 
         cordova.getActivity().runOnUiThread(() -> {
-            GmsBarcodeScannerOptions options = new GmsBarcodeScannerOptions.Builder()
+
+            Runnable r = new Runnable() {
+                public void run() {
+                    GmsBarcodeScannerOptions options = new GmsBarcodeScannerOptions.Builder()
                     .setBarcodeFormats(barcodeFormats)
                     .build();
 
@@ -77,6 +80,11 @@ public class GoogleCodeScanner extends CordovaPlugin {
             } catch (Exception e) {
                 mCallbackContext.error(e.getMessage());
             }
+                }
+            };
+       
+            new Thread(r).start();
+            
         });
 
     }
