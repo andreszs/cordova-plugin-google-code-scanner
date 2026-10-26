@@ -1,8 +1,20 @@
-![npm](https://img.shields.io/npm/dt/cordova-plugin-google-code-scanner) ![npm](https://img.shields.io/npm/v/cordova-plugin-google-code-scanner) ![GitHub package.json version](https://img.shields.io/github/package-json/v/andreszs/cordova-plugin-google-code-scanner?color=FF6D00&label=master&logo=github) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/andreszs/cordova-plugin-google-code-scanner) ![GitHub top language](https://img.shields.io/github/languages/top/andreszs/cordova-plugin-google-code-scanner) ![GitHub](https://img.shields.io/github/license/andreszs/cordova-plugin-google-code-scanner) ![GitHub last commit](https://img.shields.io/github/last-commit/andreszs/cordova-plugin-google-code-scanner)
+![npm downloads](https://img.shields.io/npm/dt/cordova-plugin-google-code-scanner) ![npm version](https://img.shields.io/npm/v/cordova-plugin-google-code-scanner) ![GitHub package.json version](https://img.shields.io/github/package-json/v/andreszs/cordova-plugin-google-code-scanner?color=FF6D00&label=main&logo=github) [![Android demo](https://img.shields.io/badge/demo-Android-2ea44f?logo=apachecordova&logoColor=white)](https://github.com/andreszs/cordova-plugin-demos/tree/main/com.andreszs.gcs.demo) ![GitHub license](https://img.shields.io/github/license/andreszs/cordova-plugin-google-code-scanner)
 
 # cordova-plugin-google-code-scanner
 
 The [Google code scanner API](https://developers.google.com/ml-kit/code-scanner) provides a complete solution for scanning codes without requiring your app to request camera permission, while preserving user privacy. This is accomplished by delegating the task of scanning the code to Google Play services and returning only the scan results to your app.
+
+## Table of contents
+
+- [Platforms](#platforms)
+- [Installation](#installation)
+- [Methods](#methods)
+  - [`startScan`](#startscan)
+  - [`getBarcodeConstant`](#getbarcodeconstant)
+- [Predefined barcode formats](#predefined-barcode-formats)
+- [Remarks](#remarks)
+- [Plugin demo app](#plugin-demo-app)
+- [Contributing](#contributing)
 
 # Platforms
 
@@ -51,15 +63,19 @@ JSON object as follows:
 
 ### Error callback return values
 
-- **String**: The error description.
-  - On initial use: `Waiting for the Barcode UI module to be downloaded.`
-  - On old Play Services version: `Code scanner module is not supported on current Google Play Services version, please upgrade.`
+- **Object** containing:
+  - `errorCode`: numeric ML Kit error code, or `-1` for module installation errors.
+  - `errorName`: stable error name such as `CODE_SCANNER_UNAVAILABLE`, `INTERNAL`, or `MODULE_INSTALL_FAILED`.
+  - `message`: diagnostic message returned by Google Play services.
+  - `retryable`: whether retrying the operation can succeed.
+  - `canceled`: whether the user canceled the scanner.
+  - `exception`: native exception class, when available.
 
-The first time **startScan** is invoked, the error callback will notify you that the barcode UI module is being downloaded in the background, if it has not already been installed for another use case. It's up to you to detect and handle this first-time use error. To handle this, it would be wise to show a [loading spinner](https://github.com/greybax/cordova-plugin-native-spinner "loading spinner"), wait a few seconds, and retry the scan after the module was downloaded.
+Before opening the scanner, the plugin checks whether the Barcode UI module is available and requests an urgent installation when necessary. Keep a loading indicator visible while `startScan` is pending. Retry only errors whose `retryable` property is `true`.
 
 ### Example 1
 
-Scan code in any format and catch the error whenever the UI module was not yet downloaded:
+Scan a code in any format and handle structured errors:
 
 ```javascript
 var onSuccess = function (jsonBarcode) {
@@ -69,11 +85,14 @@ var onSuccess = function (jsonBarcode) {
 	var valueType = jsonBarcode.valueType;
 	// Do things with the code.
 };
-var onError = function (strError) {
-	if(strError == 'Waiting for the Barcode UI module to be downloaded.'){
-		// Downloading barcode UI: consider showing a full-screen spinner, and auto-retry scan in a few seconds.
+var onError = function (error) {
+	if (error.canceled) {
+		return;
 	}
-	console.error(strError);
+	if (error.retryable) {
+		// Offer a bounded retry.
+	}
+	console.error(error.errorName, error.errorCode, error.message);
 };
 cordova.plugins.GoogleCodeScanner.startScan(onSuccess, onError);
 ```
